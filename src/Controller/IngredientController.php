@@ -16,8 +16,10 @@ class IngredientController extends AbstractController
 
 {
     #[Route('/ingredient', name: 'app_ingredient', methods: ['GET'])]
-    public function index(IngredientRepository $repository, PaginatorInterface $paginator, Request $request): Response
-    {
+    public function index(IngredientRepository $repository, 
+    PaginatorInterface $paginator, 
+    Request $request
+    ): Response{
         $ingredients = $paginator->paginate(
             $repository->findAll(),
             $request->query->getInt('page', 1), 
@@ -61,6 +63,7 @@ class IngredientController extends AbstractController
         ]);
 
     }
+    
     #[Route('/ingredient/edition{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
         /*IngredientRepository $repository, int $id*/ 
@@ -85,6 +88,7 @@ class IngredientController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
     #[Route('/ingredient/suppression/{id}', 'ingredient.delete', methods: ['GET'])]
     public function delete(
         EntityManagerInterface $manager, 
