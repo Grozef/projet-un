@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class IngredientController extends AbstractController
 
+    //this controller displays all ingredients
+
 {
     #[Route('/ingredient', name: 'app_ingredient', methods: ['GET'])]
     public function index(IngredientRepository $repository, 
