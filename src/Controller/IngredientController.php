@@ -64,6 +64,8 @@ class IngredientController extends AbstractController
 
     }
     
+        //controller wich allow us to modify an ingredient
+
     #[Route('/ingredient/edition{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
         /*IngredientRepository $repository, int $id*/ 
@@ -89,18 +91,13 @@ class IngredientController extends AbstractController
         ]);
     }
 
+        //controller wich allow to delete an ingredient
+
     #[Route('/ingredient/suppression/{id}', 'ingredient.delete', methods: ['GET'])]
     public function delete(
         EntityManagerInterface $manager, 
         Ingredient $ingredient
         ) : Response {
-          /*  if(!$ingredient) {
-                $this->addFlash(
-                    'warning',
-                    'Votre ingredient n\'a pas été trouvé !'
-                );
-                return $this->redirectToRoute('ingredient.index');
-            }*/
 
         $manager->remove($ingredient);
         $manager->flush();

@@ -45,6 +45,7 @@ class RecipeType extends AbstractType
                     'min' => 1,
                     'max' => 1140
                 ],
+                'required' => false,
                 'label' => 'Temps (en minutes)',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -60,6 +61,7 @@ class RecipeType extends AbstractType
                     'min' => 1,
                     'max' => 50
                 ],
+                'required' => false,
                 'label' => 'Nombre de personnes',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -75,6 +77,7 @@ class RecipeType extends AbstractType
                     'min' => 1,
                     'max' => 5
                 ],
+                'required' => false,
                 'label' => 'Difficulté',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
@@ -106,6 +109,7 @@ class RecipeType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
+                'required' => false,
                 'constraints' => [
                     new Assert\Positive(),
                     new Assert\LessThan(1001)
@@ -115,10 +119,11 @@ class RecipeType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'favoris ?',
+                'label' => 'Recette favorite ?',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
+                'required' => false,
                 'constraints' => [
                     new Assert\NotNull(),
                 ]
@@ -129,11 +134,20 @@ class RecipeType extends AbstractType
                     return $r->createQueryBuilder('i')
                         ->orderBy('i.name', 'ASC');
                 },
+                'label' => 'les ingrédients',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true, 
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary mt-4'
+                ],
+                'label' => 'Créer ma recette'
+            ])
         ;
     }
 
