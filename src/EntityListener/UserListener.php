@@ -17,12 +17,14 @@ class UserListener
     {
         $this->encodePassword($user);
     }
+/*
+        bug symfony, le preUpdate ne flush pas la donnée
 
     public function preUpdate(User $user)
     {
         $this->encodePassword($user);
     }
-
+*/
         //Encode password based on plainPassword
     public function encodePassword(User $user)
     {
