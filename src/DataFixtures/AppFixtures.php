@@ -13,7 +13,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
-
     private Generator $faker;
 
     public function __construct()
@@ -54,23 +53,14 @@ class AppFixtures extends Fixture
 
         //Users
 
-        for ($k=0; $k < 10 ; $k++) { 
+        for ($i = 0; $i < 10 ; $i++) { 
             $user = new User();
             $user->setFullName($this->faker->name())
-                ->setPseudo(mt_rand(1, 1) === 1 ? $this->faker->firstName() : null)
+                ->setPseudo(mt_rand(0, 1) === 1 ? $this->faker->firstName() : null)
                 ->setEmail($this->faker->email())
                 ->setRoles(['ROLE_USER'])
-/*
-                $hashPassword = $this->hasher->hashPassword(
-                    $user,
-                    'password'
-                );
-                $user->setPassword($hashPassword);  */
-
                 ->setPlainPassword('password');
                 
-
-
                 $manager->persist($user);
         }
 

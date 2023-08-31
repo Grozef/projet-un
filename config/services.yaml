@@ -22,10 +22,12 @@ services:
             - "../src/Kernel.php"
             - "../src/Tests/"
 
-    # Accrocher l'entityListener à un evenement
-    App\entityListener\:
+    # Accrocher l'entityListener à un evenement Attention à la casse de sa gmlp
+    App\EntityListener\:
         resource: "../src/EntityListener/"
         tags: ["doctrine.orm.entity_listener"]
+
+        
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
