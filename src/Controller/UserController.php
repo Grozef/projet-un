@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use DateTimeImmutable;
 use App\Form\UserPasswordType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,31 +62,43 @@ class UserController extends AbstractController
         ]);
     }
 
+        //this controller allows us to modify an user's password
     #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.pasword', methods: ['GET', 'POST'])]    
     public function editPassword(User $user, 
                                 Request $request,
                                 UserPasswordHasherInterface $hasher,
                                 EntityManagerInterface $manager
                                 ) : Response {
+//add à vérifier
+
+         if (!$this->getUser()) {
+            return $this->redirectToRoute('security.login');
+        }
+                            
+        if ($this->getUser() !== $user) {
+            return $this->redirectToRoute('recipe.index');
+        }
+//add à vérifier                            
         $form = $this->createForm(UserPasswordType::class);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
-            if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])
-            ) {
-
+            if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])) {
+                /*
+                Si bug symfony, si le preUpdate ne flush pas la donnée
                 $user->setPassword(
                     $hasher->hashPassword(
                     $user,
                     $form->getData()['newPassword']
                     )
                 );
-                /*
+                */
+                 $user->setUpdatedAt(new DateTimeImmutable());
                  $user->setPlainPassword(
                     $form->getData()['newPassword']
                 );
-                bug symfony, le preUpdate ne flush pas la donnée
-                */
+                
+                
 
                 $manager->persist($user);
                 $manager->flush();

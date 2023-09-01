@@ -8,7 +8,7 @@
         {%  if not recipes.items is same as ([]) %}
                 <h1> Mes recettes </h1>
 
-                <a href="{{ path('recipe.new') }}" class="btn btn-success">
+                <a href="{{ path('recipe.new') }}" class="btn btn-primary">
                     Créer une recette
                 </a>
 
@@ -44,7 +44,7 @@
                                     <td>{{ recipe.difficulty is null ? 'Non renseigné' : recipe.difficulty }}</td>
                                     <td>{{ recipe.createdAt|date("d/m/Y") }}</td>
                                     <td>
-                                        <a href="{{ path('recipe.edit', {id: recipe.id}) }}" class="btn btn-primary">Modifier</a>
+                                        <a href="{{ path('recipe.edit', {id: recipe.id}) }}" class="btn btn-warning">Modifier</a>
                                     </td>
                                     <td>
                                         <a href="{{ path('recipe.delete', {id: recipe.id}) }}" class="btn btn-danger">Supprimer</a>

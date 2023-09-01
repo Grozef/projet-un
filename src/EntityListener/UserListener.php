@@ -19,12 +19,13 @@ class UserListener
     }
 /*
         bug symfony, le preUpdate ne flush pas la donnée
-
+        soluce apprendre #Symfony6-Edition du profil et du mot de passe #13 de développeur Musclé sur YouTube
+*/
     public function preUpdate(User $user)
     {
         $this->encodePassword($user);
     }
-*/
+
         //Encode password based on plainPassword
     public function encodePassword(User $user)
     {
