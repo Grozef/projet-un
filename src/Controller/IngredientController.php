@@ -23,7 +23,7 @@ class IngredientController extends AbstractController
     Request $request
     ): Response{
         $ingredients = $paginator->paginate(
-            $repository->findAll(),
+            $repository->findBy(['user' => $this->getUser()]),
             $request->query->getInt('page', 1), 
             10 
         );
@@ -47,6 +47,7 @@ class IngredientController extends AbstractController
             $form->handleRequest($request);
             if($form->isSubmitted() && $form ->isValid()) {
                 $ingredient = $form ->getData();
+                $ingredient->setUser($this->getUser());
 
                 $manager->persist($ingredient);
                 $manager->flush();
