@@ -7,9 +7,11 @@ use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class IngredientController extends AbstractController
@@ -18,6 +20,9 @@ class IngredientController extends AbstractController
 
 {
     #[Route('/ingredient', name: 'app_ingredient', methods: ['GET'])]
+    //annotation pour restreindre la fonction uniquement aux ROLE_USER
+    #[IsGranted('ROLE_USER')]
+
     public function index(IngredientRepository $repository, 
     PaginatorInterface $paginator, 
     Request $request
@@ -35,8 +40,10 @@ class IngredientController extends AbstractController
 
     //This controller show a form wich create an ingredient
 
-    #[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
+    //#[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
     #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'])]
+    //annotation pour restreindre la fonction uniquement aux ROLE_USER
+    #[IsGranted('ROLE_USER')]
     public function new(
         Request $request,
         EntityManagerInterface $manager,
@@ -69,6 +76,8 @@ class IngredientController extends AbstractController
     
         //controller wich allow us to modify an ingredient
 
+    // Sécurité pour verifier que l'utilisateur a bien un role et que l'ingredient lui appartienne   
+    //#[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/edition{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
         /*IngredientRepository $repository, int $id*/ 
