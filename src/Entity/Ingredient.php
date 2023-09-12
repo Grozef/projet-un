@@ -20,13 +20,13 @@ class Ingredient
     #[ORM\Column(type: 'string',length: 80)]
     #[Assert\NotBlank()]
     #[Assert\Length(min: 2, max: 80)]
-    private string $name;
+    private ?string $name;
 
     #[ORM\Column (type: 'float')]
     #[Assert\NotNull()]
     #[Assert\Positive()]
     #[Assert\LessThan(200)]
-    private float $price;
+    private ?float $price;
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]
