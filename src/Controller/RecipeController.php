@@ -11,11 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RecipeController extends AbstractController
 {
     //this controller display all recipes
     #[Route('/recette', name: 'recipe.index', methods: ['GET'])]
+
     public function index(
         RecipeRepository $repository, 
         PaginatorInterface $paginator, 
