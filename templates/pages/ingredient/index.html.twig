@@ -8,6 +8,12 @@
         {%  if not ingredients.items is same as ([]) %}
                 <h1> Mes ingrédients </h1>
 
+                {% for message in app.flashes('warning') %}
+                    <div class="alert alert-warning mt-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
                 <a href="{{ path('ingredient.new') }}" class="btn btn-primary">
                     Créer un ingrédient
                 </a>

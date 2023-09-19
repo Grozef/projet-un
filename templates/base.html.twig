@@ -29,8 +29,20 @@
     </head>
     <body>
         {% block header %}  
+
+                    {# faire suivre les messages flash 
+            {% block flash %}
+                        {% for message in app.flashes('success','alert','warning') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+            {% endblock %}  #}
+
             {% include "partials/_header.html.twig" %} 
         {% endblock %}
-        {% block body %}{% endblock %}
+        {% block body %}
+
+        {% endblock %}
     </body>
 </html>

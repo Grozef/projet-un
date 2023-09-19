@@ -4,6 +4,12 @@
     <div class="container mt-4">
         <h1 class="mt-4"> Modification de l'un des ingrédient </h1>
 
+            {% for message in app.flashes('warning') %}
+              <div class="alert alert-warning mt-4">
+                  {{ message }}
+              </div>
+            {% endfor %}
+
         {{ form_start(form) }}
             <div class="form-error">
                 {{ form_errors(form) }}
