@@ -19,10 +19,9 @@ class IngredientController extends AbstractController
     //this controller displays all ingredients
 
 {
-    #[Route('/ingredient', name: 'app_ingredient', methods: ['GET'])]
-    //annotation pour restreindre la fonction uniquement aux ROLE_USER
-    #[IsGranted('ROLE_USER')]
-
+        //annotation pour restreindre la fonction uniquement aux ROLE_USER
+        #[IsGranted('ROLE_USER')]
+    #[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
     public function index(IngredientRepository $repository, 
     PaginatorInterface $paginator, 
     Request $request
@@ -39,11 +38,10 @@ class IngredientController extends AbstractController
     }
 
     //This controller show a form wich create an ingredient
-
-    //#[Route('/ingredient', name: 'ingredient.index', methods: ['GET'])]
-    #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'])]
     //annotation pour restreindre la fonction uniquement aux ROLE_USER
     #[IsGranted('ROLE_USER')]
+
+    #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'])]
     public function new(
         Request $request,
         EntityManagerInterface $manager,
@@ -77,7 +75,7 @@ class IngredientController extends AbstractController
         //controller wich allow us to modify an ingredient
 
     // Sécurité pour verifier que l'utilisateur a bien un role et que l'ingredient lui appartienne   
-    //#[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
+    #[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
     #[Route('/ingredient/edition{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
         /*IngredientRepository $repository, int $id*/ 
