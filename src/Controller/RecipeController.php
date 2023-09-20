@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Mark;
 use App\Entity\User;
 use App\Entity\Recipe;
+use App\Form\MarkType;
 use App\Form\RecipeType;
+use App\Repository\MarkRepository;
+
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,19 +40,72 @@ class RecipeController extends AbstractController
         ]);
     }
 
+    // controller who allow us to see a public recipe
+    #[Route('/recette/publique', 'recipe.index.public', methods: ['GET'])]
+    public function indexPublic(
+        RecipeRepository $repository,
+        PaginatorInterface $paginator,
+        Request $request
+    ) : Response {
+        $recipes = $paginator->paginate(
+            $repository -> findPublicRecipe(null),
+            $request->query->getInt('page', 1), 
+            10
+        );
+
+        return $this->render('pages/recipe/index_public.html.twig', [
+        'recipes' => $recipes,
+        ]);
+    }
+
     //controller showRecipe
     #[IsGranted('ROLE_USER')]
-    #[Route('/recette/{id}', 'recipe.show', methods: ['GET'])]
-    public function show(Recipe $recipe) : Response
-        {
-            if ($recipe-> getIsPublic() == true ) {
+    #[Route('/recette/{id}', 'recipe.show', methods: ['GET', 'POST'])]
+    public function show(
+                        Recipe $recipe,
+                        Request $request,
+                        MarkRepository $markRepository,
+                        EntityManagerInterface $manager
+                        ) : Response {
+            if ($recipe-> getIsPublic() !== true ) {
                 $this->addFlash(
                     'warning',
                     'Cette recette n\'est pas publique.');
                     return $this->redirectToRoute('recipe.index');
             } else {
+                
+                $mark = new Mark();
+                $form = $this->createForm(MarkType::class, $mark);
+                $form->handleRequest($request);
+
+                if($form->isSubmitted() && $form->isValid()) {
+                    $mark->setUser($this->getUser())
+                    ->setRecipe($recipe);
+
+                    $existingMark = $markRepository->findOneBy([
+                        'user' => $this->getUser(),
+                        'recipe' => $recipe
+                    ]);
+
+                    if(!$existingMark) {
+                        $manager->persist($mark);
+                        $manager->flush();
+                        $this->addFlash(
+                            'success',
+                            'Votre note a bien été prise en compte !');
+
+                    } else {
+                        $existingMark->setMark(
+                            $form->getData()->getMark()
+                        );
+                        $this->addFlash(
+                            'warning',
+                            'Vous aviez déjà noté cette recette, le changement a bien été pris en compte !');
+                }
+            }
             return $this->render('pages/recipe/show.html.twig', [
-                'recipe' => $recipe
+                'recipe' => $recipe,
+                'form' => $form->createView()
                 ]);
             }
         }
@@ -100,7 +156,7 @@ class RecipeController extends AbstractController
                     return $this->redirectToRoute('security.login');
                 }
         */
-                //recuperer le user via la recipe / A affiner, ne marche pas mais la logique est pas loin
+                //recuperer le user via la recipe 
                 if ($this->getUser() !== $recipe->getUser()) {
                     //return $this->redirectToRoute('security.login');
                     //mettre un message alert pour dire ceci n'est pas votre recette
