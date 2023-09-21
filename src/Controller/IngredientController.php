@@ -9,7 +9,6 @@ use App\Repository\IngredientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -53,6 +52,7 @@ class IngredientController extends AbstractController
             $form = $this->createForm(IngredientType::class, $ingredient);
             $form->handleRequest($request);
             if($form->isSubmitted() && $form ->isValid()) {
+                // ligne inutile, trouver son utilité
                 $ingredient = $form ->getData();
                 $ingredient->setUser($this->getUser());
 
@@ -78,6 +78,9 @@ class IngredientController extends AbstractController
 
     // Sécurité pour verifier que l'utilisateur a bien un role et que l'ingredient lui appartienne   
     //#[Security("is_granted('ROLE_USER') and user === ingredient.getUser()")]
+
+    //bonne pratique dans la route, lier le nom a l'objet
+    //corriger la chaine url id
     #[IsGranted('ROLE_USER')]
     #[Route('/ingredient/edition{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(
@@ -105,6 +108,8 @@ class IngredientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //persist a integrer  => bonne pratique
+            $manager->persist($ingredient);
             $manager->flush();
             $this->addFlash(
                 'success',

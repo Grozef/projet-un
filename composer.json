@@ -11,6 +11,8 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
         "knplabs/knp-paginator-bundle": "^6.2",
+        "sonata-project/admin-bundle": "^4.27",
+        "sonata-project/doctrine-orm-admin-bundle": "^4.13",
         "symfony/console": "6.3.*",
         "symfony/doctrine-bridge": "6.3.*",
         "symfony/dotenv": "6.3.*",
@@ -25,8 +27,7 @@
         "symfony/yaml": "6.3.*",
         "symfonycasts/verify-email-bundle": "^1.13",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {

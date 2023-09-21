@@ -8,12 +8,10 @@ use App\Entity\Recipe;
 use App\Form\MarkType;
 use App\Form\RecipeType;
 use App\Repository\MarkRepository;
-
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-//use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -41,7 +39,7 @@ class RecipeController extends AbstractController
     }
 
     // controller who allow us to see a public recipe
-    #[Route('/recette/publique', 'recipe.index.public', methods: ['GET'])]
+    #[Route('/recette/publique', 'recipe.community', methods: ['GET'])]
     public function indexPublic(
         RecipeRepository $repository,
         PaginatorInterface $paginator,

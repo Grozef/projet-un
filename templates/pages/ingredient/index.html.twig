@@ -44,7 +44,7 @@
                                     <tr class="table-active">
                                     <th scope="row">{{ ingredient.id }}</th>
                                     <td>{{ ingredient.name }}</td>
-                                    <td>{{ ingredient.price }}</td>
+                                    <td>{{ ingredient.price|number_format(2, '.',',') }} €</td>
                                     <td>{{ ingredient.createdAt|date("d/m/Y") }}</td>
                                     <td>
                                         <a href="{{ path('ingredient.edit', {id: ingredient.id}) }}" class="btn btn-warning">Modifier</a>
