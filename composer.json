@@ -12,7 +12,6 @@
         "doctrine/orm": "^2.16",
         "knplabs/knp-paginator-bundle": "^6.2",
         "sonata-project/admin-bundle": "^4.27",
-        "sonata-project/doctrine-orm-admin-bundle": "^4.13",
         "symfony/console": "6.3.*",
         "symfony/doctrine-bridge": "6.3.*",
         "symfony/dotenv": "6.3.*",
