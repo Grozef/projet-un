@@ -26,6 +26,9 @@ class Media
     #[ORM\Column(type: 'string', length: 150)]
     private ?string $chemin;
 
+    #[ORM\Column(type: 'string', length: 150)]
+    private ?string $taille;
+
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private ?string $extension;
 
