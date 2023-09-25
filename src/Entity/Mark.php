@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use App\Entity\User;
 use App\Entity\Recipe;
-
-
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MarkRepository;

@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use Vich\Uploadable;
+use App\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\RecipeRepository;
 
+use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -76,6 +76,9 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Mark::class, orphanRemoval: true)]
     private Collection $marks;
 
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Media::class, orphanRemoval: true)]
+    private Collection $media;
+
     private ?float $average = null;
 
 
@@ -86,6 +89,9 @@ class Recipe
         $this->createdAt = new \DateTimeImmutable;
         $this->updatedAt = new \DateTimeImmutable;
         $this->marks = new ArrayCollection();
+        //media
+        $this->media = new ArrayCollection();
+
     }
 
     #[ORM\PrePersist()]
@@ -305,5 +311,33 @@ class Recipe
         $this-> average = $total / count($marks);
         
         return $this->average;
+    }
+
+    //Attraper le media associé à la recette
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function setMedia(Media $media): static
+    {
+        if (!$this->media->contains($media)) {
+            $this->media->add($media);
+            $media->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): static
+    {
+        if ($this->media->removeElement($media)) {
+            // set the owning side to null (unless already changed)
+            if ($media->getRecipe() === $this) {
+                $media->setRecipe(null);
+            }
+        }
+
+        return $this;
     }
 }

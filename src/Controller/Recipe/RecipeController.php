@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Recipe;
 
 use App\Entity\Mark;
 use App\Entity\User;
+use App\Entity\Media;
 use App\Entity\Recipe;
 use App\Form\MarkType;
 use App\Form\RecipeType;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class RecipeController extends AbstractController
 {
@@ -60,11 +62,12 @@ class RecipeController extends AbstractController
     #[IsGranted('ROLE_USER')]
     #[Route('/recette/{id}', 'recipe.show', methods: ['GET', 'POST'])]
     public function show(
-                        Recipe $recipe,
-                        Request $request,
-                        MarkRepository $markRepository,
-                        EntityManagerInterface $manager
-                        ) : Response {
+        Recipe $recipe,
+        Request $request,
+        MarkRepository $markRepository,
+        EntityManagerInterface $manager
+        ) : Response 
+    {
             if ($recipe-> getIsPublic() !== true ) {
                 $this->addFlash(
                     'warning',
@@ -108,38 +111,6 @@ class RecipeController extends AbstractController
             }
         }
 
-    // controller for a new recipe
-    #[IsGranted('ROLE_USER')]
-    #[Route('/recette/creation', name: 'recipe.new', methods: ['GET', 'POST'])]
-    public function new(
-        Request $request,
-        EntityManagerInterface $manager,
-        ) : Response {
-        $recipe = new Recipe();
-        $form = $this->createForm(RecipeType::class, $recipe);
-
-        $form-> handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $recipe= $form->getData();
-            $recipe->setUser($this->getUser());
-
-            $manager->persist($recipe);
-            $manager->flush();
-
-            $this->addFlash(
-                'success',
-                'Vous avez bien ajouté votre recette !'
-            );
-
-            return $this->redirectToRoute('recipe.index');
-
-        }
-
-        return $this->render('pages/recipe/new.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
             //controller wich allow us to edit a recipe
             //#[Security("is_granted('ROLE_USER') and user === recipe.getUser()")]  déprécié condition à mettre dans le code
             #[IsGranted('ROLE_USER')]
@@ -168,6 +139,7 @@ class RecipeController extends AbstractController
                 $form->handleRequest($request);
         
                 if ($form->isSubmitted() && $form->isValid()) {
+            
                     $manager->flush();
                     $this->addFlash(
                         'success',

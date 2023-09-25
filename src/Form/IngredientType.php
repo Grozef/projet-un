@@ -3,10 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Ingredient;
-//use Doctrine\DBAL\Types\TextType;
-//soluce chatGPT
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

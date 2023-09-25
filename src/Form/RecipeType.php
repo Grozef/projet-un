@@ -8,8 +8,10 @@ use App\Repository\IngredientRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
@@ -152,6 +154,33 @@ class RecipeType extends AbstractType
                 'multiple' => true,
                 'expanded' => true, 
             ])
+            //Attention, champ à peaufiner
+            // départ
+            ->add('media', FileType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10M', // Taille maximale du fichier
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                           // 'video/mp4',
+                            // Ajoutez les types MIME pris en charge
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image ou une vidéo valide.'
+                    ])
+                ],
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Image ou document associé à la recette',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ]
+            ])
+            
+            //arrivée
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
